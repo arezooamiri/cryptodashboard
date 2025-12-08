@@ -21,9 +21,10 @@ export default function Header() {
           sx={{
             backgroundColor: "#64dd17",
             color: "black",
-            fontSize:"10px",
+            fontSize:10,
             borderRadius:15,
-            width:"80",
+            width:140,
+            height:40,
             "&:hover": {
               backgroundColor: "#0d8f0d", // سبز تیره‌تر
             },

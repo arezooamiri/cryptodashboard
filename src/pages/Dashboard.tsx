@@ -9,7 +9,7 @@ export default function Dashboard() {
         <Header />
       </Grid>
 
-      <Grid size={12}>
+      <Grid size={12} sx={{height:"80vh",paddingRight:3}}>
         <MainDashboard />
       </Grid>
     </Grid>

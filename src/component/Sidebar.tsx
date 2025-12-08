@@ -59,6 +59,7 @@ export default function Sidebar() {
                 justifyContent: "flex-start",
                 gap: 1,
                 textDecoration: "none",
+                fontSize:12,
                 color: isActive ? "white" : "#bdbdbd",
                 "&:hover": { color: "white" },
               }}

@@ -12,7 +12,7 @@ function App() {
   return (
     <Grid
       container
-      spacing={4}
+      spacing={1}
       sx={{ backgroundColor: "#212121", minHeight: "100vh", minWidth: "100vw" }}
     >
       <Sidebar />
