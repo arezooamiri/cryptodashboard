@@ -6,7 +6,7 @@ import MessageSvg from "../icon/Message";
 import SettingSvg from "../icon/Setting";
 import LogoutSvg from "../icon/Logout";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { useState } from "react";
+
 
 export default function Sidebar() {
   const location = useLocation();
@@ -30,7 +30,7 @@ export default function Sidebar() {
         direction="column"
         rowSpacing={4}
         sx={{
-          padding: 2,
+        
           display: "flex",
           justifyContent: "center",
           alignContent: "center",
@@ -38,7 +38,7 @@ export default function Sidebar() {
       >
         <Box
           component="img"
-          src="cryptologo.jpg"
+          src="cryptologo.png"
           sx={{
             width: 60,
             height: 50,
