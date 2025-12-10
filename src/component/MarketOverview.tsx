@@ -18,7 +18,7 @@ export default function MarketOverview(){
     }
 
     return(
-        <Grid  size={6} sx={{backgroundColor:"#424242",borderRadius:2,boxShadow:"revert",padding:2 ,display:"flex",flexDirection:"column",gap:1,height:"30vh",overflowY:"auto"}}>
+        <Grid size={4}  sx={{backgroundColor:"#424242",borderRadius:2,boxShadow:"revert",padding:2 ,display:"flex",flexDirection:"column",gap:1,overflowY:"auto"}}>
             <Box component="span" sx={{fontSize:12,fontWeight:500}}>Market Overview</Box>
             <Box sx={{display:"flex",width:"100%",fontSize:8}}>
                <ButtonBase sx={{backgroundColor:"#64dd17",color:"black",borderRadius:15,width:"50%",height:20,fontSize:12}}>Popular</ButtonBase>

@@ -22,12 +22,13 @@ export default function MainDashboard() {
         </Grid>
         <Grid size={12} direction="column" container spacing={4}>
           <Grid container spacing={2} sx={{ height: "30vh" }}>
-            <MarketOverview />
+            <PaymentHistory />
             <QuickTrade />
           </Grid>
         </Grid>
       </Grid>
-      <PaymentHistory />
+      <MarketOverview />
+      
     </Grid>
   );
 }
