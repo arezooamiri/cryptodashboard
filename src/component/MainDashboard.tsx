@@ -3,8 +3,11 @@ import ChartDetail from "./ChartDetail";
 import MarketOverview from "./MarketOverview";
 import QuickTrade from "./QuickTrade";
 import PaymentHistory from "./PaymentHistory";
+import { useState } from "react";
+
 
 export default function MainDashboard() {
+   const [selectid,setSelectId]=useState<string>("bitcoin")
   return (
     <Grid container spacing={2} sx={{ height: "80vh" }}>
       <Grid size={8} container direction="row" spacing={1}>
@@ -18,7 +21,7 @@ export default function MainDashboard() {
           }}
         >
           {" "}
-          <ChartDetail />
+          <ChartDetail id={selectid}/>
         </Grid>
         <Grid size={12} direction="column" container spacing={4}>
           <Grid container spacing={2} sx={{ height: "30vh" }}>
@@ -27,7 +30,7 @@ export default function MainDashboard() {
           </Grid>
         </Grid>
       </Grid>
-      <MarketOverview />
+      <MarketOverview  onSelectId={setSelectId}/>
       
     </Grid>
   );

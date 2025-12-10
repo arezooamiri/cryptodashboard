@@ -1,11 +1,14 @@
 import { Box, Button, ButtonBase, Card, Grid, Typography } from "@mui/material";
 import UseCoins from "../Api/Coinapi";
+import { useState } from "react";
 
+type MarketOverviewProps = {
+  onSelectId: (id: string) => void;
+};
 
-
-export default function MarketOverview(){
+export default function MarketOverview({onSelectId}:MarketOverviewProps){
     const {data,isLoading,error}=UseCoins()
-     
+   
     if (isLoading)
         return(
             <Typography>data is loading </Typography>
@@ -16,7 +19,7 @@ export default function MarketOverview(){
          <Typography>Error loading</Typography>
        )
     }
-
+   
     return(
         <Grid size={4}  sx={{backgroundColor:"#424242",borderRadius:2,boxShadow:"revert",padding:2 ,display:"flex",flexDirection:"column",gap:1,overflowY:"auto"}}>
             <Box component="span" sx={{fontSize:12,fontWeight:500}}>Market Overview</Box>
@@ -26,7 +29,7 @@ export default function MarketOverview(){
             </Box>
             <Box sx={{display:'flex',flexDirection:"column",gap:0.5}}>
                {data?.map((item,index)=>(
-                 <Card variant="outlined" key={index} sx={{display:"flex", justifyContent:"space-between",backgroundColor:"transparent",boxShadow:"revert",fontSize:12,fontWeight:700,padding:1,color:"white"}}>
+                 <Card variant="outlined" key={index} sx={{display:"flex", justifyContent:"space-between",backgroundColor:"transparent",boxShadow:"revert",fontSize:12,fontWeight:700,padding:1,color:"white"}}   onClick={()=>onSelectId(item.id)} >
                     <Box sx={{display:"flex",gap:0.5}}>
                         <Box component="img" src={item.image} sx={{width:20,height:20}}></Box>
                         <Box component="span">{item.symbol.toUpperCase()} </Box>

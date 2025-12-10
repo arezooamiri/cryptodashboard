@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getCoinHistory } from "../Api/Coinapi";
 import { LineChart, lineElementClasses } from "@mui/x-charts/LineChart";
-import { useDrawingArea } from "@mui/x-charts";
+
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
@@ -11,50 +11,33 @@ type coinHistorypoint = {
   time: string;
   price: number;
 };
-
-const Gradient = () => {
-  const { top, height, bottom } = useDrawingArea();
-  const svgHeight = top + height + bottom;
-
-  return (
-    <defs>
-      <linearGradient
-        id="myGradient"
-        x1="0"
-        y1={top}
-        x2="0"
-        y2={svgHeight - bottom}
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop offset="0%" stopColor="#42a5f5" />
-        <stop offset="100%" stopColor="#66bb6a" />
-      </linearGradient>
-    </defs>
-  );
+type chartDetailProps = {
+  id: string;
 };
-export default function ChartDetail() {
+
+export default function ChartDetail({ id }: chartDetailProps) {
   const [clicked, setClick] = useState(false);
   const [clickedw, setClickW] = useState(false);
   const [points, setPoints] = useState<coinHistorypoint[]>([]);
-  console.log(points);
+ 
   const handelClickD = () => {
     setClick(!clicked);
   };
   const handelClicW = () => {
     setClickW(!clickedw);
+    
   };
   useEffect(() => {
     async function load() {
-      const data = await getCoinHistory("bitcoin", "day", "usd");
+      const data = await getCoinHistory(id, "day", "usd");
       setPoints(data);
     }
     load();
-  }, []);
+  }, [id]);
 
   const price = points.map((item) => item.price);
   const priceStart = price[0];
   const priceEnd = price[price.length - 1];
-  console.log(typeof(priceEnd));
 
   const change = priceEnd - priceStart;
   const percent = (change / priceStart) * 100;
@@ -64,21 +47,20 @@ export default function ChartDetail() {
   const max = Math.max(...price);
   const range = max - min || 1;
   const pad = range * 0.1;
-
+  const result = priceEnd?.toFixed(2);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          width: "100%",
-          padding: 2,
+
+          padding: 1,
         }}
       >
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Box component="span" sx={{ fontSize: 16, fontWeight: "500" }}>
-            {" "}
-            Total balance{" "}
+            Total balance
           </Box>
           <Box
             sx={{
@@ -99,7 +81,7 @@ export default function ChartDetail() {
             {percent.toFixed(2)}%
           </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-around", gap: 1 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-around", gap: 0.5 }}>
           <Button
             onClick={handelClickD}
             variant="contained"
@@ -161,9 +143,8 @@ export default function ChartDetail() {
           height: "40vh",
         }}
       >
-        <Box component="span" sx={{ paddingLeft: 2 }}>
-          
-          
+        <Box component="span" sx={{ paddingLeft: 2, fontSize: 18 }}>
+          $ {result}
         </Box>
         <LineChart
           series={[
@@ -172,8 +153,10 @@ export default function ChartDetail() {
               area: true,
               showMark: false,
               color: "#64dd17",
+              label: id.toLocaleUpperCase(),
             },
           ]}
+         
           xAxis={[
             {
               disableLine: true,
