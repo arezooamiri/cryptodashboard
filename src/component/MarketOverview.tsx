@@ -1,6 +1,6 @@
 import { Box, Button, ButtonBase, Card, Grid, Typography } from "@mui/material";
 import UseCoins from "../Api/Coinapi";
-import { useState } from "react";
+
 
 type MarketOverviewProps = {
   onSelectId: (id: string) => void;
