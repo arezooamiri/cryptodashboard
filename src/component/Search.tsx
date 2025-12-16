@@ -5,6 +5,9 @@ import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 
 import SearchIcon from "@mui/icons-material/Search";
+import { coinList } from "../Api/Coinapi";
+import { useMemo, useState } from "react";
+import { Typography } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -48,7 +51,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({onSelectId}:{
+  onSelectId:(id:string)=>void;
+}) {
+  const {data,isLoading,error}=coinList()
+  const [query,setQuery]=useState('');
+   
+  const searchCoin=useMemo(()=>{
+    if(!data ||!query.trim()) return[];
+    const q=query.trim().toLowerCase();
+
+    return(data ).filter((c)=>{
+      return(
+        c.name?.toLowerCase().includes(q)||c.symbol?.toLowerCase().includes(q)
+      );
+    }).slice(0,10);
+
+   },[data,query])
+      
+  
   return (
     <Box >
       <Search>
@@ -56,10 +77,29 @@ export default function SearchAppBar() {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          value={query}
+          onChange={(e)=>setQuery(e.target.value)}
           placeholder="Search Coins "
           inputProps={{ "aria-label": "search coin" }}
         />
       </Search>
+      {isLoading &&(
+        <Typography sx={{ mt: 1, fontSize: 12, color: "#9e9e9e" }}> Loading Coin...</Typography>
+      )}
+      {error &&(
+         <Typography sx={{ mt: 1, fontSize: 12, color: "#ef4444" }}>
+          Failed to load coins
+        </Typography>
+      )}
+      {!isLoading && !error && searchCoin.length>0 &&(
+        <Box>{searchCoin.map((coin)=>(
+             
+          <Box onClick={()=>onSelectId(coin.id)}>{coin.symbol} {coin.current_price}</Box>
+
+            
+        ))}</Box>
+      )}
+
     </Box>
   );
 }
