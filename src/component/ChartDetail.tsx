@@ -1,7 +1,7 @@
-import { Box, Button } from "@mui/material";
+import { Box} from "@mui/material";
 import { useEffect, useState } from "react";
 import { getCoinHistory } from "../Api/Coinapi";
-import { LineChart, lineElementClasses } from "@mui/x-charts/LineChart";
+import { LineChart} from "@mui/x-charts/LineChart";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -16,17 +16,10 @@ type chartDetailProps = {
 };
 
 export default function ChartDetail({ id }: chartDetailProps) {
-  const [clicked, setClick] = useState(false);
-  const [clickedw, setClickW] = useState(false);
+
   const [points, setPoints] = useState<coinHistorypoint[]>([]);
  
-  const handelClickD = () => {
-    setClick(!clicked);
-  };
-  const handelClicW = () => {
-    setClickW(!clickedw);
-    
-  };
+  
   useEffect(() => {
     async function load() {
       const data = await getCoinHistory(id, "day", "usd");

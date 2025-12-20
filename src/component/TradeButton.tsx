@@ -6,7 +6,7 @@ function TradeButtons() {
   const [alignment, setAlignment] = useState<"left" | "right">("left");
 
   const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
+    _: React.MouseEvent<HTMLElement>,
     newAlignment: "left" | "right" | null
   ) => {
     if (newAlignment !== null) {

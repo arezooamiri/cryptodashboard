@@ -9,7 +9,7 @@ type MarketOverviewProps = {
 
 export default function MarketOverview({ onSelectId }: MarketOverviewProps) {
   const { data, isLoading, error } = UseCoins();
-  const{isActive,setIsActive}=buttonAactive();
+  const{isActive}=buttonAactive();
   const selectCoins = selectCoin((state) => state.selectCoins);
 
   if (isLoading) return <Typography>data is loading </Typography>;
