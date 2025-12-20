@@ -3,11 +3,18 @@ import SearchBar from "./Search";
 import Profile from "./Profile";
 import { useState } from "react";
 import SearchAppBar from "./Search";
+import { buttonAactive } from "../store";
 
 export default function Header({ onSelectId }: { onSelectId: (id: string) => void }) {
   const [open, setOpen] = useState(false);
   const handelopen = () => setOpen(true);
   const handelclose = () => setOpen(false);
+  const {setIsActive}=buttonAactive()
+  const handelSelecClose=(id:string)=>{
+      onSelectId(id);
+      handelclose();
+      setIsActive(false)
+  }
   return (
     <Box
       sx={{
@@ -57,7 +64,7 @@ export default function Header({ onSelectId }: { onSelectId: (id: string) => voi
                 top: "50%",
                 left: "50%",
                 width: "50%", 
-                backgroundColor:"#212121",
+                backgroundColor:"#1e2b2b",
                 transform: 'translate(-50%, -50%)',
                 border: "2px solid #000",
                 borderRadius:2,
@@ -70,7 +77,7 @@ export default function Header({ onSelectId }: { onSelectId: (id: string) => voi
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Add your coin
               </Typography>
-              <SearchAppBar onSelectId={onSelectId}/>
+              <SearchAppBar onSelectId={handelSelecClose}/>
             </Box>
           </Modal>
         </Box>

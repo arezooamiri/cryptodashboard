@@ -10,7 +10,7 @@ export default function AssetsList() {
     <Grid
       size={8}
       sx={{
-        backgroundColor: "#424242",
+        backgroundColor: "#1e2b2b",
         width: "100%",
         padding: 2,
         borderRadius: 1,

@@ -13,9 +13,9 @@ export default function Sidebar() {
   const sideBarElement = [
     { name: "Dashboard", svg: <DasboardSvg />, path: "/" },
     { name: "Wallet", svg: <WalletSvg />, path: "/wallet" },
-    { name: "Income", svg: <IncomeSvg />, path: "/income" },
-    { name: "Message", svg: <MessageSvg />, path: "/message" },
-    { name: "Setting", svg: <SettingSvg />, path: "/setting" },
+    { name: "Income", svg: <IncomeSvg />, path:"" },
+    { name: "Message", svg: <MessageSvg />, path:"" },
+    { name: "Setting", svg: <SettingSvg />,path:""},
   ];
   return (
     <Grid

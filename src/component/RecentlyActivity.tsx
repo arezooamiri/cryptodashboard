@@ -9,7 +9,7 @@ export default function RecentlyActivity() {
         display: "flex",
         flexDirection: "column",
         gap: 0.5,
-        backgroundColor: "#424242",
+        backgroundColor: "#1e2b2b",
         width: "100%",
         padding: 1,
         borderRadius: 0.5,

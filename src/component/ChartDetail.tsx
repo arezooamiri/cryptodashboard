@@ -49,7 +49,7 @@ export default function ChartDetail({ id }: chartDetailProps) {
   const pad = range * 0.1;
   const result = priceEnd?.toFixed(2);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1,backgroundColor:"#1e2b2b",borderRadius:2 }}>
       <Box
         sx={{
           display: "flex",
@@ -81,58 +81,7 @@ export default function ChartDetail({ id }: chartDetailProps) {
             {percent.toFixed(2)}%
           </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-around", gap: 0.5 }}>
-          <Button
-            onClick={handelClickD}
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: clicked ? "transparent" : "#616161",
-              borderRadius: 20,
-              color: clicked ? "#64dd17" : "white",
-              border: clicked ? "1 solid #64dd17" : "none",
-            }}
-          >
-            D
-          </Button>
-          <Button
-            onClick={handelClicW}
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: clickedw ? "transparent" : "#616161",
-              borderRadius: 20,
-              color: clickedw ? "#64dd17" : "white",
-              border: clickedw ? "1 solid c" : "none",
-            }}
-          >
-            W
-          </Button>
-          <Button
-            // onClick={handelClick}
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: "#616161",
-              borderRadius: 20,
-              color: "white",
-            }}
-          >
-            M
-          </Button>
-          <Button
-            //  onClick={handelClick}
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: "#616161",
-              borderRadius: 20,
-              color: "white",
-            }}
-          >
-            Y
-          </Button>
-        </Box>
+       
       </Box>
       <Box
         sx={{

@@ -10,22 +10,17 @@ export default function MainDashboard({selectedId,onSelectId}:{ selectedId: stri
   onSelectId: (id: string) => void;}) {
   
   return (
-    <Grid container spacing={2} sx={{ height: "80vh" }}>
+    <Grid container spacing={2} >
       <Grid size={8} container direction="row" spacing={1}>
         <Grid
           size={12}
-          sx={{
-            backgroundColor: "#424242",
-            borderRadius: 2,
-            boxShadow: "revert",
-            height: "50vh",
-          }}
+          
         >
           {" "}
           <ChartDetail id={selectedId}/>
         </Grid>
         <Grid size={12} direction="column" container spacing={4}>
-          <Grid container spacing={2} sx={{ height: "30vh" }}>
+          <Grid container spacing={2}>
             <PaymentHistory />
             <QuickTrade />
           </Grid>

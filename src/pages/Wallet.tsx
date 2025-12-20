@@ -11,7 +11,7 @@ export default function Wallet() {
   return (
     <Grid container direction="row" spacing={1}  sx={{ minHeight: "100vh" }}>
       <Grid size={12}>
-        <Header />
+        <Header onSelectId={setSelectId} />
       </Grid>
 
       <Grid size={12} sx={{ paddingBottom:1, paddingRight: 3 }} container >
