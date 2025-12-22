@@ -1,7 +1,7 @@
-import { Box} from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Skeleton } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import { getCoinHistory } from "../Api/Coinapi";
-import { LineChart} from "@mui/x-charts/LineChart";
+import { LineChart } from "@mui/x-charts/LineChart";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -16,33 +16,85 @@ type chartDetailProps = {
 };
 
 export default function ChartDetail({ id }: chartDetailProps) {
-
   const [points, setPoints] = useState<coinHistorypoint[]>([]);
- 
-  
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function load() {
+      setLoading(true);
       const data = await getCoinHistory(id, "day", "usd");
       setPoints(data);
+      setLoading(false);
     }
     load();
   }, [id]);
+  const price = useMemo(
+()=>points.map(item=>item.price),[points]
+);
 
-  const price = points.map((item) => item.price);
-  const priceStart = price[0];
-  const priceEnd = price[price.length - 1];
+const xAxisData = useMemo(
+  () => points.map((p) => p.timestamp),
+  [points]
+);
+  const {
+   
+    percent,
+     isPositive,
+    min,
+    max,
+    pad,
+    result,
+  } = useMemo(() => {
+    if (price.length === 0) {
+      return {
+        priceStart: 0,
+        priceEnd: 0,
+        percent: 0,
+        isPositive: true,
+        min: 0,
+        max: 0,
+        pad: 1,
+        result: "0.00",
+        change:0,
+        range:0,
+      };
+    } else {
+      
+      const priceStart = price[0];
+      const priceEnd = price[price.length - 1];
+      const change = priceEnd - priceStart;
+      const percent = (change / priceStart) * 100;
+      const isPositive=percent>=0;
+      const min = Math.min(...price);
+      const max = Math.max(...price);
+      const range = max - min || 1;
+      const pad = range * 0.1;
+      return {
+        priceStart,
+        priceEnd,
+        percent,
+        isPositive,
+        min,
+        max,
+        pad,
+        result: priceEnd.toFixed(2),
+        change,
+        range,
+      
+      };
+    }
+  },[price]);
 
-  const change = priceEnd - priceStart;
-  const percent = (change / priceStart) * 100;
-  const isPositive = percent >= 0;
-  const xAxisData = points.map((p) => p.timestamp);
-  const min = Math.min(...price);
-  const max = Math.max(...price);
-  const range = max - min || 1;
-  const pad = range * 0.1;
-  const result = priceEnd?.toFixed(2);
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1,backgroundColor:"#1e2b2b",borderRadius:2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+        backgroundColor: "#1e2b2b",
+        borderRadius: 2,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -55,26 +107,29 @@ export default function ChartDetail({ id }: chartDetailProps) {
           <Box component="span" sx={{ fontSize: 16, fontWeight: "500" }}>
             Total balance
           </Box>
-          <Box
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              padding: "4px 10px",
-              borderRadius: "20px",
-              backgroundColor: isPositive
-                ? "rgba(0,200,83,0.12)"
-                : "rgba(255,23,68,0.12)",
-              color: isPositive ? "#00e676" : "#ff1744",
-              fontWeight: 600,
-              fontSize: "14px",
-            }}
-          >
-            {isPositive ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-            {percent.toFixed(2)}%
-          </Box>
+          {loading ? (
+            <Skeleton variant="rounded" />
+          ) : (
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "4px 10px",
+                borderRadius: "20px",
+                backgroundColor: isPositive
+                  ? "rgba(0,200,83,0.12)"
+                  : "rgba(255,23,68,0.12)",
+                color: isPositive ? "#00e676" : "#ff1744",
+                fontWeight: 600,
+                fontSize: "14px",
+              }}
+            >
+              {isPositive ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+              {percent.toFixed(2)}%
+            </Box>
+          )}
         </Box>
-       
       </Box>
       <Box
         sx={{
@@ -85,57 +140,66 @@ export default function ChartDetail({ id }: chartDetailProps) {
           height: "40vh",
         }}
       >
-        <Box component="span" sx={{ paddingLeft: 2, fontSize: 18 }}>
-          $ {result}
-        </Box>
-        <LineChart
-          series={[
-            {
-              data: price,
-              area: true,
-              showMark: false,
-              color: "#64dd17",
-              label: id.toLocaleUpperCase(),
-            },
-          ]}
-         
-          xAxis={[
-            {
-              disableLine: true,
-              disableTicks: true,
-              scaleType: "time",
-              data: xAxisData,
-              valueFormatter: (timestamp) => {
-                const d = new Date(timestamp);
-                return d.getHours().toString().padStart(2, "0");
+        {loading ? (
+          <Skeleton variant="rounded" />
+        ) : (
+          <Box component="span" sx={{ paddingLeft: 2, fontSize: 18 }}>
+            $ {result}
+          </Box>
+        )}
+        {loading ? (
+          <Box sx={{ px: 2, flex: 1 }}>
+            <Skeleton variant="rounded" width="100%" height="100%" />
+          </Box>
+        ) : (
+          <LineChart
+            series={[
+              {
+                data: price,
+                area: true,
+                showMark: false,
+                color: "#64dd17",
+                label: id.toLocaleUpperCase(),
               },
-              tickLabelStyle: {
-                fill: "white",
+            ]}
+            xAxis={[
+              {
+                disableLine: true,
+                disableTicks: true,
+                scaleType: "time",
+                data: xAxisData,
+                valueFormatter: (timestamp) => {
+                  const d = new Date(timestamp);
+                  return d.getHours().toString().padStart(2, "0");
+                },
+                tickLabelStyle: {
+                  fill: "white",
+                },
               },
-            },
-          ]}
-          yAxis={[
-            {
-              min: min - pad,
-              max: max + pad,
-              disableLine: true,
-              disableTicks: true,
-              tickLabelStyle: {
-                fill: "white",
+            ]}
+            yAxis={[
+              {
+                min: min - pad,
+                max: max + pad,
+                disableLine: true,
+                disableTicks: true,
+                tickLabelStyle: {
+                  fill: "white",
+                },
               },
-            },
-          ]}
-          sx={{
-            "& .MuiAreaElement-root": {
-              fill: "#76ff03",
-              fillOpacity: 0.25,
-            },
-            "& .MuiLineElement-root": {
-              stroke: "#76ff03",
-              strokeWidth: 1.5,
-            },
-          }}
-        />
+            ]}
+            sx={{
+              "& .MuiAreaElement-root": {
+                fill: "#76ff03",
+                fillOpacity: 0.25,
+              },
+              "& .MuiLineElement-root": {
+                stroke: "#76ff03",
+                strokeWidth: 1.5,
+              },
+            }}
+          />
+        )}
       </Box>
     </Box>
   );

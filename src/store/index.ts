@@ -21,7 +21,8 @@ type Activation={
 }
 export const selectCoin=create<CoinStore>((set)=>({
       selectCoins:[],
-      addCoin:(coin)=> set((state)=>({selectCoins:[...state.selectCoins,coin]}))
+      addCoin:(coin)=> set((state)=>(
+{selectCoins:[...state.selectCoins,coin]}))
 }))
 
 export const buttonAactive=create<Activation>((set)=>(
