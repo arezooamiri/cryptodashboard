@@ -1,14 +1,11 @@
 import { styled } from "@mui/material/styles";
-
 import Box from "@mui/material/Box";
-
 import InputBase from "@mui/material/InputBase";
-
 import SearchIcon from "@mui/icons-material/Search";
-import { coinList } from "../Api/Coinapi";
 import { useEffect, useMemo, useState } from "react";
 import { Typography } from "@mui/material";
 import { buttonAactive, selectCoin } from "../store";
+import UseCoinsMarket from "../Api/Coinapi";
 type Coin = {
   image: string;
   id: string;
@@ -63,7 +60,7 @@ export default function SearchAppBar({
 }: {
   onSelectId: (id: string) => void;
 }) {
-  const { data, isLoading, error } = coinList();
+  const { data, isLoading, error } = UseCoinsMarket(100)
   const [query, setQuery] = useState("");
   const [queryActive, setQueryActive] = useState(true);
   const { setIsActive } = buttonAactive();
@@ -74,6 +71,7 @@ export default function SearchAppBar({
     setIsActive(false);
     setQuery("");
   };
+  
   useEffect(() => {
     if (query.trim()) {
       setQueryActive(true);

@@ -1,10 +1,11 @@
 import { Box, Skeleton } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import {  useMemo } from "react";
 import { getCoinHistory } from "../../../Api/Coinapi";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 type coinHistorypoint = {
   timestamp: number;
@@ -16,18 +17,19 @@ type chartDetailProps = {
 };
 
 export default function ChartDetail({ id }: chartDetailProps) {
-  const [points, setPoints] = useState<coinHistorypoint[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      const data = await getCoinHistory(id, "day", "usd");
-      setPoints(data);
-      setLoading(false);
-    }
-    load();
-  }, [id]);
+  const { data, isLoading, isFetching } = useQuery<coinHistorypoint[]>({
+    queryKey: ["coinHistory", id, "day", "usd"],
+    queryFn: ({ signal }) => getCoinHistory(id, "day", "usd", signal),
+    enabled: !!id,
+
+    placeholderData:keepPreviousData,
+    staleTime: 60_000,
+    retry: false,
+    refetchOnWindowFocus: false, 
+    refetchOnReconnect: false,
+  });
+  const points=data??[];
   const price = useMemo(() => points.map((item) => item.price), [points]);
 
   const xAxisData = useMemo(() => points.map((p) => p.timestamp), [points]);
@@ -69,7 +71,17 @@ export default function ChartDetail({ id }: chartDetailProps) {
       };
     }
   }, [price]);
-
+    // ✅ فقط بار اول اگر دیتا نداریم، اسکلتون کامل
+  if (isLoading && points.length === 0) {
+    return (
+      <Box sx={{ backgroundColor: "#1e2b2b", borderRadius: 2, p: 2 }}>
+        <Skeleton variant="rounded" height={24} />
+        <Box sx={{ mt: 2 }}>
+          <Skeleton variant="rounded" width="100%" height="40vh" />
+        </Box>
+      </Box>
+    );
+  }
   return (
     <Box
       sx={{
@@ -92,7 +104,7 @@ export default function ChartDetail({ id }: chartDetailProps) {
           <Box component="span" sx={{ fontSize: 16, fontWeight: "500" }}>
             Total balance
           </Box>
-          {loading ? (
+          {isFetching ? (
             <Skeleton variant="rounded" />
           ) : (
             <Box
@@ -125,14 +137,14 @@ export default function ChartDetail({ id }: chartDetailProps) {
           height: "40vh",
         }}
       >
-        {loading ? (
+        {isFetching ? (
           <Skeleton variant="rounded" />
         ) : (
           <Box component="span" sx={{ paddingLeft: 2, fontSize: 18 }}>
             $ {result}
           </Box>
         )}
-        {loading ? (
+        {isFetching ? (
           <Box sx={{ px: 2, flex: 1 }}>
             <Skeleton variant="rounded" width="100%" height="100%" />
           </Box>

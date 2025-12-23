@@ -1,23 +1,20 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
-import UseCoins from "../Api/Coinapi";
+import { Box, Grid, Skeleton } from "@mui/material";
 import { buttonAactive, selectCoin } from "../store";
 import SegmentedButtons from "./segmentButton";
 import CoinList from "./CoinList";
+import UseCoinsMarket from "../Api/Coinapi";
 
 type MarketOverviewProps = {
   onSelectId: (id: string) => void;
 };
 
 export default function MarketOverview({ onSelectId }: MarketOverviewProps) {
-  const { data, isLoading, error } = UseCoins();
+  const { data=[], isLoading} = UseCoinsMarket(10)
   const { isActive } = buttonAactive();
   const selectCoins = selectCoin((state) => state.selectCoins);
-
  
 
-  if (error) {
-    return <Typography>Error loading</Typography>;
-  }
+ 
 
   return (
     <Grid
@@ -44,6 +41,7 @@ export default function MarketOverview({ onSelectId }: MarketOverviewProps) {
         <Box>
           {isActive ? (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+          
               {data?.map((item) => {
               return (
                   <CoinList item={item} onSelectedId={onSelectId}/>)

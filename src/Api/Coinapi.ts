@@ -23,31 +23,38 @@ export interface CoinHistoryPoint{
     time:string;
     price:number;
 }
-export default function UseCoins(){
+export default function UseCoinsMarket(perPage:number){
     return useQuery<Coin[]>({
-        queryKey:["coins"],
-        queryFn:async()=>{
+        queryKey:["coins",perPage],
+        queryFn:async({signal})=>{
             const res=await axios.get( "https://api.coingecko.com/api/v3/coins/markets",{
+                signal,
                 params:{
-                    vs_currency:"usd",
+                     vs_currency:"usd",
                     order:"market_cap_desc",
-                    per_page:10,
                     page:1,
+                    per_page:perPage,
                 }
 
             })
             return res.data;
-        }
+        },
+        staleTime:60_000,
+        retry:false,
+        refetchOnWindowFocus:false,
+        refetchOnReconnect:false,
     })
 }
 
 
-export async function getCoinHistory(coinID:string,range:TimeRange,vsCurrency:string='usd'):Promise<CoinHistoryPoint[]>{
+export async function getCoinHistory(coinID:string,range:TimeRange,vsCurrency:string='usd', signal?: AbortSignal):Promise<CoinHistoryPoint[]>{
     const days=rangeToDays[range]
 
     const res=await axios.get(`https://api.coingecko.com/api/v3/coins/${coinID}/market_chart`,
-        {
+        { 
+            signal,
             params:{
+               
                 vs_currency:vsCurrency,
                 days,
             }
@@ -68,29 +75,5 @@ export async function getCoinHistory(coinID:string,range:TimeRange,vsCurrency:st
     })
     return points;
 }
-
-export  function coinList(){
-    return useQuery<Coin[]>(
-        {
-            queryKey:['coin'],
-            queryFn:async()=>{
-                const res= await axios.get("https://api.coingecko.com/api/v3/coins/markets",
-                    {
-                          params:{
-                    vs_currency:"usd",
-                    order:"market_cap_desc",
-                   per_page:100,
-                   page:1
-                }   
-
-                    }
-                )
-                return res.data
-            },
-            
-        }
-    )
-}
-
 
 
