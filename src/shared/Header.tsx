@@ -1,20 +1,25 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
-import SearchBar from "./Search";
-import Profile from "./Profile";
-import { useState } from "react";
-import SearchAppBar from "./Search";
-import { buttonAactive } from "../store";
 
-export default function Header({ onSelectId }: { onSelectId: (id: string) => void }) {
+import { useState } from "react";
+
+import { buttonAactive } from "../store";
+import SearchAppBar from "./Search";
+import Profile from "./Profile";
+
+export default function Header({
+  onSelectId,
+}: {
+  onSelectId: (id: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const handelopen = () => setOpen(true);
   const handelclose = () => setOpen(false);
-  const {setIsActive}=buttonAactive()
-  const handelSelecClose=(id:string)=>{
-      onSelectId(id);
-      handelclose();
-      setIsActive(false)
-  }
+  const { setIsActive } = buttonAactive();
+  const handelSelecClose = (id: string) => {
+    onSelectId(id);
+    handelclose();
+    setIsActive(false);
+  };
   return (
     <Box
       sx={{
@@ -32,8 +37,8 @@ export default function Header({ onSelectId }: { onSelectId: (id: string) => voi
           gap: 4,
         }}
       >
-        <SearchBar  onSelectId={onSelectId}/>
-        <Box sx={{position:"relative"}}>
+        <SearchAppBar onSelectId={onSelectId} />
+        <Box sx={{ position: "relative" }}>
           <Button
             variant="contained"
             sx={{
@@ -63,21 +68,21 @@ export default function Header({ onSelectId }: { onSelectId: (id: string) => voi
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "50%", 
-                backgroundColor:"#1e2b2b",
-                transform: 'translate(-50%, -50%)',
+                width: "50%",
+                backgroundColor: "#1e2b2b",
+                transform: "translate(-50%, -50%)",
                 border: "2px solid #000",
-                borderRadius:2,
+                borderRadius: 2,
                 boxShadow: 24,
                 p: 4,
-                display:"flex",
-                gap:1,
+                display: "flex",
+                gap: 1,
               }}
             >
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Add your coin
               </Typography>
-              <SearchAppBar onSelectId={handelSelecClose}/>
+              <SearchAppBar onSelectId={handelSelecClose} />
             </Box>
           </Modal>
         </Box>

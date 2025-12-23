@@ -3,7 +3,6 @@ import UseCoins from "../Api/Coinapi";
 import { buttonAactive, selectCoin } from "../store";
 import SegmentedButtons from "./segmentButton";
 
-
 type MarketOverviewProps = {
   onSelectId: (id: string) => void;
 };

@@ -1,5 +1,6 @@
 import { Box,  Card, Grid } from "@mui/material";
-import TradeButtons from "./TradeButton";
+import TradeButtons from "../../../shared/TradeButton";
+
 
 
 export default function QuickTrade(){

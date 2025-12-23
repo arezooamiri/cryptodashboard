@@ -1,9 +1,9 @@
 import "./App.css";
 import { Grid } from "@mui/material";
-import Sidebar from "./component/Sidebar";
+import Sidebar from "./shared/Sidebar";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Wallet from "./pages/Wallet";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Wallet from "./pages/wallet/Wallet";
 
 
 function App() {

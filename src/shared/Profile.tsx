@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import DropDown from "./Dropdown";
+import DropDown from "../shared/Dropdown";
 
 
 export default function Profile(){

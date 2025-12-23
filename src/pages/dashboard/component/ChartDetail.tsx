@@ -1,6 +1,6 @@
 import { Box, Skeleton } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { getCoinHistory } from "../Api/Coinapi";
+import { getCoinHistory } from "../../../Api/Coinapi";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -28,23 +28,10 @@ export default function ChartDetail({ id }: chartDetailProps) {
     }
     load();
   }, [id]);
-  const price = useMemo(
-()=>points.map(item=>item.price),[points]
-);
+  const price = useMemo(() => points.map((item) => item.price), [points]);
 
-const xAxisData = useMemo(
-  () => points.map((p) => p.timestamp),
-  [points]
-);
-  const {
-   
-    percent,
-     isPositive,
-    min,
-    max,
-    pad,
-    result,
-  } = useMemo(() => {
+  const xAxisData = useMemo(() => points.map((p) => p.timestamp), [points]);
+  const { percent, isPositive, min, max, pad, result } = useMemo(() => {
     if (price.length === 0) {
       return {
         priceStart: 0,
@@ -55,16 +42,15 @@ const xAxisData = useMemo(
         max: 0,
         pad: 1,
         result: "0.00",
-        change:0,
-        range:0,
+        change: 0,
+        range: 0,
       };
     } else {
-      
       const priceStart = price[0];
       const priceEnd = price[price.length - 1];
       const change = priceEnd - priceStart;
       const percent = (change / priceStart) * 100;
-      const isPositive=percent>=0;
+      const isPositive = percent >= 0;
       const min = Math.min(...price);
       const max = Math.max(...price);
       const range = max - min || 1;
@@ -80,10 +66,9 @@ const xAxisData = useMemo(
         result: priceEnd.toFixed(2),
         change,
         range,
-      
       };
     }
-  },[price]);
+  }, [price]);
 
   return (
     <Box

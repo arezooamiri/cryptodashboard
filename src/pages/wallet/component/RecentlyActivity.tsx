@@ -1,5 +1,6 @@
 import { Box, Grid } from "@mui/material";
-import { transaction } from "../data/transactions";
+import { transaction } from "../../../data/transactions";
+
 
 export default function RecentlyActivity() {
   return (
